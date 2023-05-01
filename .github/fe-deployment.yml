@@ -1,0 +1,34 @@
+name: fe-deployment
+on:
+  workflow_dispatch: null
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    env:
+      working_directory: ./fractal-fe
+    defaults:
+      run:
+        working-directory: ${{ env.working_directory }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: eu-west-1
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+      - run: npm install
+      - run: npm run build
+      - run: rm -rf dist && mkdir -p dist
+      - run: aws s3 rm s3://fractal-deploymentbucket --recursive
+      - run: aws cloudformation package --template-file cloudformation.yaml --output-template-file dist/cloudformation.dist.yaml --s3-bucket fractal-deploymentbucket
+      - run: aws cloudformation deploy --template-file dist/cloudformation.dist.yaml --stack-name fractal-fe --s3-bucket fractal-deploymentbucket --no-fail-on-empty-changeset
+      - run: aws s3 sync ./build s3://fractal-fe/

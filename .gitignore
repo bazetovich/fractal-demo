@@ -1,0 +1,26 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+fractal-fe/node_modules
+fractal-server/node_modules
+fractal-fe/.pnp
+fractal-fe/.pnp.js
+
+# testing
+fractal-fe/coverage
+
+# production
+fractal-fe/build
+fractal-server/build
+
+# misc
+fractal-fe/.DS_Store
+fractal-fe/.env.local
+fractal-fe/.env.development.local
+fractal-fe/.env.test.local
+fractal-fe/.env.production.local
+fractal-server/.env
+
+fractal-fe/npm-debug.log*
+fractal-fe/yarn-debug.log*
+fractal-fe/yarn-error.log*

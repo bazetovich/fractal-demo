@@ -1,0 +1,39 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Creates an s3 bucket for web hosting
+
+Resources:
+  CloudFrontOriginIdentityFrontend:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: Cloudfront OAI for frontend s3 website buckets
+
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: fractal-fe
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: '*'
+            Action:
+              - s3:GetObject
+            Resource: !Sub ${WebsiteBucket.Arn}/*
+
+Outputs:
+  BucketName:
+    Value: !Ref WebsiteBucket
+    Description: Name of S3 bucket that holds website content
