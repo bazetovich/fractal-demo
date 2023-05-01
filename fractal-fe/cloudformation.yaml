@@ -4,12 +4,6 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Creates an s3 bucket for web hosting
 
 Resources:
-  CloudFrontOriginIdentityFrontend:
-    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: Cloudfront OAI for frontend s3 website buckets
-
   WebsiteBucket:
     Type: AWS::S3::Bucket
     Properties:
