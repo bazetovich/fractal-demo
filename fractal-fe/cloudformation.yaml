@@ -8,7 +8,11 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: fractal-fe
-      AccessControl: PublicRead
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: ObjectWriter
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: index.html
