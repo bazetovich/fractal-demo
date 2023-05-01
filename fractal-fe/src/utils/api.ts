@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
+import { isLocalEnv } from './env';
 
 const instance = axios.create({
-  // Will be dynamic based on env
-  baseURL: 'http://localhost:8001/api/',
+  baseURL: isLocalEnv() ? 'http://localhost:8001/api/' : 'https://tbaas-bots-pool.azurewebsites.net/api/',
   headers: {
     Authorization: 'some-valid-token-in-reality',
   },

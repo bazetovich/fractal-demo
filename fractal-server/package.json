@@ -2,6 +2,7 @@
     "name": "fractal-server",
     "version": "0.1.0",
     "private": true,
+    "main": "build/index.js",
     "scripts": {
         "build": "npx tsc",
         "start": "node build/index.js",
